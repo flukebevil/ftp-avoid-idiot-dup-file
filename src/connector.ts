@@ -34,12 +34,12 @@ export class Connector {
   };
 
   // NOTE: To all files data and sort date by desc
-  getLastestFile = async (dirPath: string) => {
+  getLatestFile = async (dirPath: string) => {
     const connect = await this.connection();
     const files = await connect.list(dirPath);
     connect.close();
 
-    // NOTE: Don't care any speed issue expected < 1000 files;
+    // NOTE: Don't care any speed issue expected < 1000 files
     return files.sort((a, b) => moment(b.rawModifiedAt).diff(a.rawModifiedAt));
   };
 
