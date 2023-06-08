@@ -1,4 +1,5 @@
 import { Client } from "basic-ftp";
+import moment from "moment";
 import { join } from "path";
 
 export class Connector {
@@ -30,6 +31,16 @@ export class Connector {
     }
 
     return result;
+  };
+
+  // NOTE: To all files data and sort date by desc
+  getLastestFile = async (dirPath: string) => {
+    const connect = await this.connection();
+    const files = await connect.list(dirPath);
+    connect.close();
+
+    // NOTE: Don't care any speed issue expected < 1000 files;
+    return files.sort((a, b) => moment(b.rawModifiedAt).diff(a.rawModifiedAt));
   };
 
   removeFile = async (dirPath: string, fileName: string) => {
